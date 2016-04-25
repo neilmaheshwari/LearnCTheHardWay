@@ -44,5 +44,23 @@ int main(int argc, char *argv[])
             another[0], another[1],
             another[2], another[3]);
 
+    numbers[0] = 'Z';
+    numbers[1] = 'e';
+    numbers[2] = 'd';
+    numbers[3] = '\0';
+
+    printf("numbers: %c %c %c %c\n", numbers[0], numbers[1], numbers[2], numbers[3]);
+
+    name[0] = 0;
+    name[1] = 1;
+    name[2] = 2;
+    name[3] = 3;
+
+    printf("name: %d %d %d %d\n", name[0], name[1], name[2], name[3]);
+
+    int name_as_int = (another[0] << 24) + (another[1] << 16) + (another[2] << 8) + another[3];
+
+    printf("name as int: %d\n", name_as_int);
+
     return 0;    
 }

@@ -7,7 +7,7 @@ int main(int argc, char *argv[])
     printf("You have %d bugs at the imaginary rate of %f.\n", 
             bugs, bug_rate);
 
-    long universe_of_defects = 1L * 1024L * 1024L * 1024L;
+    unsigned long universe_of_defects = 1L * 1024L * 1024L * 1024L;
     printf("You entire universe has %ld bugs.\n", 
             universe_of_defects);
 
@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
             expected_bugs);
 
     double parts_of_universe = expected_bugs / universe_of_defects;
-    printf("That is onle a %e portion of the universe.\n", 
+    printf("That is only a %e portion of the universe.\n", 
             parts_of_universe);
 
     //this makes no sense, just a demo of something weird

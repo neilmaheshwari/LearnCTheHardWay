@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 int main(int argc, char *argv[])
 {
     // go through each string in argv
@@ -24,5 +25,15 @@ int main(int argc, char *argv[])
         i++;
     }
 
-    return 0;
+    // Copy values from argv into states
+    // This demonstrates that we are not copying the strings
+    i = 0;
+    while(i < num_states){
+        states[i] = argv[i];
+        i++;
+    }
+
+    argv[2][0] = 'x';
+
+    printf ("was the string copied? %s\n", states[2]);
 }

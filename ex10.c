@@ -15,8 +15,12 @@ int main(int argc, char *argv[])
     // go through each string in argv
     for (i = 1; i < argc; i++) {
         printf("arg %d: %s\n", i, argv[i]);
-    }    
-
+	if (i == 3){
+	    break;
+	}
+	    
+    }
+    
     int num_states = 4;
 
     for (i = 0; i < num_states; i++) {

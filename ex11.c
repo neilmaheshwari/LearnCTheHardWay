@@ -22,7 +22,10 @@ int main(int argc, char *argv[])
     i = 0; // watch for this
     while(i < num_states) {
         printf("state %d: %s\n", i, states[i]);
-        i++;
+	if(i == 3){
+	    break;
+	}
+	i++;
     }
 
     // Copy values from argv into states

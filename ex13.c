@@ -9,12 +9,9 @@ int main(int argc, char *argv[])
     }
 
     int i = 0;
-    for(i = 0; argv[1][i] != '\0'; i++) {
-	char letter = argv[1][i];
-
-	// Initialize lowercase to surpress warning 
-	char lowercase = 0;
-
+    char letter = 0;
+    char lowercase = 0;
+    for(i = 0; letter = argv[1][i], letter != '\0'; i++) {
 	// Chars are ASCII characters, make uppercase letters
 	// lower case
 	if(letter >= 65 && letter <= 90) {

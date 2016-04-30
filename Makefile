@@ -1,18 +1,8 @@
 CFLAGS=-Wall -g
 
 clean:
-	rm -f ex1
-	rm -f ex3
-	rm -f ex4
-	rm -f ex5
-	rm -f ex6
-	rm -f ex7
-	rm -f ex8
-	rm -f ex9
-	rm -f ex10
-	rm -f ex11
-	rm -f ex12
-	rm -f ex13
+	rm -f bin
+	mkdir bin
 
 all:
 	make ex1
@@ -27,3 +17,4 @@ all:
 	make ex11
 	make ex12
 	make ex13
+	find . -maxdepth 1 -not -name "*.c*" -not -name "*.dSYM" -name "ex*" | xargs -I file mv -f -v file bin/file

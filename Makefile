@@ -18,4 +18,5 @@ all:
 	make ex12
 	make ex13
 	make ex14
+	make ex15
 	find . -maxdepth 1 -not -name "*.c*" -not -name "*.dSYM" -name "ex*" | xargs -I file mv -f -v file bin/file

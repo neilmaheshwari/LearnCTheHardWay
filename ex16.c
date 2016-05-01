@@ -83,6 +83,20 @@ void Person_destroy(struct Person *who)
     free(who);
 }
 
+void Person_print_on_stack(struct Person who)
+{
+    printf("Name: %s\n", who.name);
+    printf("\tAge: %d\n", who.age);
+    printf("\tHeight: %d\n", who.height);
+    printf("\tWeight: %d\n", who.weight);
+}
+
+struct Person Person_create_on_stack(char *name, int age, int height, int weight)
+{
+    struct Person who = { .name = name, .age = age, .height = height, .weight = weight };
+    return who;
+}
+
 // Pretty prints a Person
 // Function takes in a pointer to a Person
 void Person_print(struct Person *who)
@@ -127,6 +141,11 @@ int main(int argc, char *argv[])
     // Returns memory allocated for both structs to OS
     Person_destroy(joe);
     Person_destroy(frank);
+
+    printf("---\n");
+
+    struct Person neil = Person_create_on_stack("Neil", 21, 68, 145);
+    Person_print_on_stack(neil);
 
     // Returns 0 to tell OS that program exited succesfully
     return 0;

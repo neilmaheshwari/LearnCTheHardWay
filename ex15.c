@@ -36,12 +36,14 @@ int main(int argc, char *argv[])
     printf("---\n");
 
     // setup the pointers to the start of the arrays
-    int *cur_age = ages;
+    int *cur_age = (int *) *names;
     char **cur_name = names;
 
     // second way using pointers
     for (i = 0; i < count; i++) {
+	char *cur_age_char = *(cur_name+i);
 	printf("%s is %d years old.\n", *(cur_name+i), *(cur_age+i));
+	printf("Their first name starts with %c.\n", *(cur_age_char));
     }
 
     printf("---\n");

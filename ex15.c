@@ -1,5 +1,7 @@
 #include <stdio.h>
 
+void print_has_years_alive(char **name, int *age, int i);
+
 int main(int argc, char *argv[])
 {
     // create two arrays we care about
@@ -30,7 +32,7 @@ int main(int argc, char *argv[])
 
     // first way using indexing
     for(i = 0; i < count; i++) {
-	printf("%s has %d years alive.\n", names[i], ages[i]);
+	print_has_years_alive(names, ages, i);
     }
     
     printf("---\n");
@@ -97,4 +99,9 @@ int main(int argc, char *argv[])
     }
     
     return 0;
+}
+
+void print_has_years_alive(char **name, int *age, int i)
+{
+    printf("%s has %d years alive.\n", *(name + i), *(age + i));
 }

@@ -20,4 +20,6 @@ all:
 	make ex14
 	make ex15
 	make ex16
-	find . -maxdepth 1 -not -name "*.c*" -name "ex*" | xargs -I file mv -f -v file bin/file
+	find . -maxdepth 1 -not -name "*.c*" -not -name "*.dSYM" -name "ex*" | xargs -I file mv -f -v file bin/file
+	find . -maxdepth 1 -name "*.dSYM" | xargs -I file rm -rfv bin/file
+	find . -maxdepth 1 -name "*.dSYM" | xargs -I file mv -f -v file bin

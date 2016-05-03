@@ -233,9 +233,12 @@ void Database_set(struct Connection *conn, int id, const char *name, const char 
     // WARNING: bug, read the "How To Break It" and fix this
     char *res = strncpy(addr->name, name, MAX_DATA);
     // demonstrate the strncpy bug
+    // strncpy returns the destination buffer
+    addr->name[MAX_DATA - 1] = '\0';
     if(!res) die("Name copy failed");
 
     res = strncpy(addr->email, email, MAX_DATA);
+    addr->email[MAX_DATA - 1] = '\0';
     if(!res) die("Email copy failed");
 }
 
@@ -289,6 +292,7 @@ int main(int argc, char *argv[])
     struct Connection *conn = Database_open(filename, action);
     int id = 0;
 
+    // atoi converts a string and converts it to an int
     if(argc > 3) id = atoi(argv[3]);
     if(id >= MAX_ROWS) die("There's not that many records.");
 

@@ -11,6 +11,7 @@
 #include <stdlib.h>
 // errno contains errno, the number of the last error
 #include <errno.h>
+// string contains strncpy
 #include <string.h>
 
 // Creates constant settings with the C Pre-Processor
@@ -260,6 +261,8 @@ void Database_get(struct Connection *conn, int id)
     }
 }
 
+void Database_find
+
 void Database_delete(struct Connection *conn, int id)
 {
     // Construct an unset address
@@ -328,6 +331,7 @@ int main(int argc, char *argv[])
         case 'l':
             Database_list(conn);
             break;
+	    
         default:
             die("Invalid action, only: c=create, g=get, s=set, d=del, l=list", conn);
     }

@@ -75,7 +75,7 @@ void Database_load(struct Connection *conn)
 {
     // Load the number of rows the the DB
     int max_rows;
-    int size_rc = fread(&max_rows, 1, sizeof(int), conn->file);
+    int size_rc = fread(&max_rows, sizeof(int), 1, conn->file);
 
     if(size_rc != 1) {
 	die("Failed to load db size.", conn);
@@ -121,7 +121,7 @@ struct Connection *Database_open(const char *filename, char mode, int max_rows)
         conn->file = fopen(filename, "w");
 
 	// Write the number of rows to the DB
-	int rc = fwrite(&max_rows, 1, sizeof(int), conn->file);
+	int rc = fwrite(&max_rows, sizeof(int), 1, conn->file);
 	if(rc != 1) {
 	    die("Could not write count to new DB.", conn);
 	}
@@ -130,7 +130,11 @@ struct Connection *Database_open(const char *filename, char mode, int max_rows)
 
 	// Allocate memory for the rows
 	struct Address rows[max_rows];
-	conn->db->rows = rows;
+	conn->db->rows = malloc(sizeof(struct Address) * max_rows);
+	if (!conn->db->rows) {
+	    die("Could not allocate memory for rows", conn);
+	}
+
     } else {
         conn->file = fopen(filename, "r+");
 
@@ -159,7 +163,6 @@ void Database_close(struct Connection *conn)
         if(conn->file) fclose(conn->file);
 
 	if(conn->db) {
-	    // Is this neccesary? It is a pointer to an array
 	    if(conn->db->rows) {
 		free(conn->db->rows);
 	    }

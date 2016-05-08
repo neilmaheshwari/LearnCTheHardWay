@@ -74,16 +74,21 @@ void Address_print(struct Address *addr)
 void Database_load(struct Connection *conn)
 {
     // Load the number of rows the the DB
-    int max_rows;
-    int size_rc = fread(&max_rows, sizeof(int), 1, conn->file);
+    int size_rc = fread(&conn->db->max_rows, sizeof(int), 1, conn->file);
 
     if(size_rc != 1) {
 	die("Failed to load db size.", conn);
     }
 
+    int max_rows = conn->db->max_rows;
+
     // Load the rows from the DB
-    struct Address addresses[max_rows];
-    int array_rc = fread(addresses,
+    conn->db->rows = malloc(sizeof(struct Address) * max_rows);
+    if(!conn->db->rows) {
+	printf("Could not allocate memory for rows.\n");
+    }
+
+    int array_rc = fread(conn->db->rows,
 			 sizeof(struct Address),
 			 max_rows,
 			 conn->file);
@@ -91,10 +96,6 @@ void Database_load(struct Connection *conn)
     if (array_rc != max_rows) {
 	die("Failed to load db contents.", conn);
     }
-
-    // Set DB
-    conn->db->max_rows = max_rows;
-    conn->db->rows = addresses;
 }
 
 // Opens and connects to the database
@@ -220,7 +221,11 @@ void Database_create(struct Connection *conn)
     }
 }
 
-void Database_set(struct Connection *conn, int id, const char *name, const char *email)
+void Database_set(
+    struct Connection *conn,
+    int id,
+    const char *name,
+    const char *email)
 {
     // Creates a pointer addr that points to
     // the address of (the id'th element of the rows variable in the

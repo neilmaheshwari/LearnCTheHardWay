@@ -130,7 +130,6 @@ struct Connection *Database_open(const char *filename, char mode, int max_rows)
 	conn->db->max_rows = max_rows;
 
 	// Allocate memory for the rows
-	struct Address rows[max_rows];
 	conn->db->rows = malloc(sizeof(struct Address) * max_rows);
 	if (!conn->db->rows) {
 	    die("Could not allocate memory for rows", conn);

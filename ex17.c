@@ -284,6 +284,39 @@ void Database_list(struct Connection *conn)
     }
 }
 
+void Database_resize(struct Connection *conn, int new_size)
+{
+    // Write new size to file
+
+    rewind(conn->file);
+
+    int rc = fwrite(&new_size, sizeof(int), 1, conn->file);
+
+    if(rc != 1) {
+	die("Could not write new size to file", conn);
+    }
+
+    // Write rows to file
+
+    int i = 0;
+    struct Address resized_rows[new_size];
+
+    for(i = 0; i < new_size; i++) {
+	if(i < conn->db->max_rows) {
+	    resized_rows[i] = conn->db->rows[i];
+	} else {
+	    struct Address addr = {.id = i, .set = 0};
+	    resized_rows[i] = addr;
+	}
+    }
+
+    rc = fwrite(resized_rows, sizeof(struct Address), new_size, conn->file);
+
+    if(rc != new_size) {
+	die("Could not write reized array to file", conn);
+    }
+}
+
 int main(int argc, char *argv[])
 {
     if(argc < 3) die("USAGE: ex17 <dbfile> <action> [action params]", NULL);
@@ -332,8 +365,14 @@ int main(int argc, char *argv[])
             Database_list(conn);
             break;
 	    
+	case 'r':
+	    if(argc != 4) die("Need size to resize with", NULL);
+	    conn = Database_open(filename, action, 0);
+	    Database_resize(conn, atoi(argv[3]));
+	    break;
+
         default:
-            die("Invalid action, only: c=create, g=get, s=set, d=del, l=list",
+            die("Invalid action, only: c=create, g=get, s=set, d=del, l=list, r=resize",
 		NULL);
     }
 

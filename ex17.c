@@ -363,10 +363,18 @@ void Database_get(struct Connection *conn, int id)
 void Database_delete(struct Connection *conn, int id)
 {
     // Construct an unset address
-    struct Address addr = {.id = id, .set = 0};
+    struct Address addr = {.id = id,
+			   .set = 0,
+			   .name = conn->db->rows[id].name,
+			   .email = conn->db->rows[id].email};
+
     // Update the id'th element of the DB pointed to by
     // conn with the unset address
     conn->db->rows[id] = addr;
+
+    // Clear the buffers for name and email
+    conn->db->rows[id].name[0] = '\0';
+    conn->db->rows[id].email[0] = '\0';
 }
 
 void Database_list(struct Connection *conn)

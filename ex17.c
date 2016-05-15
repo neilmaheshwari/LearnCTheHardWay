@@ -394,37 +394,60 @@ void Database_list(struct Connection *conn)
     }
 }
 
-void Database_resize(struct Connection *conn, int new_size)
+void Database_resize(struct Connection *conn, int new_size, int new_data_max)
 {
-    // Write new size to file
-
-    rewind(conn->file);
-
-    int rc = fwrite(&new_size, sizeof(int), 1, conn->file);
-
-    if(rc != 1) {
-	die("Could not write new size to file", conn);
-    }
-
-    // Write rows to file
-
+    // Resize number of rows
     int i = 0;
-    struct Address resized_rows[new_size];
+    struct Address *resized_rows = malloc(sizeof(struct Address) * new_size);
 
     for(i = 0; i < new_size; i++) {
 	if(i < conn->db->max_rows) {
 	    resized_rows[i] = conn->db->rows[i];
+
+	    // Resize the name buffer
+	    char *name = malloc(sizeof(char) * new_data_max);
+	    if(!name) {
+		die("Could not allocate a buffer to resize the name into", conn);
+	    }
+	    char *name_res = strncpy(name, conn->db->rows[i].name, new_data_max);
+	    if(!name_res) {
+		die("Could not copy the name while resizing the name buffer", conn);
+	    }
+	    // Null terminate the copied string
+	    name[new_data_max - 1] = '\0';
+
+	    // Resize the email buffer
+	    char *email = malloc(sizeof(char) * new_data_max);
+	    if(!email) {
+		die("Could not allocate a buffer to resize the email int", conn);
+	    }
+	    char *email_res = strncpy(email, conn->db->rows[i].email, new_data_max);
+	    if(!email_res) {
+		die("Could not copy the email while resizing the email buffer", conn);
+	    }
+	    // Null terminate the copied string
+	    email[new_data_max - 1] = '\0';
+
+            // Free the old buffers
+	    free(conn->db->rows[i].name);
+	    free(conn->db->rows[i].email);
+
+	    // Set the new buffers
+	    resized_rows[i].id = i;
+	    resized_rows[i].set = conn->db->rows[i].set;
+	    resized_rows[i].name = name;
+	    resized_rows[i].email = email;
 	} else {
-	    struct Address addr = {.id = i, .set = 0};
+	    char *name = malloc(sizeof(char) * new_data_max);
+	    char *email = malloc(sizeof(char) * new_data_max);
+	    struct Address addr = {.id = i, .set = 0, .name = name, .email = email};
 	    resized_rows[i] = addr;
 	}
     }
-
-    rc = fwrite(resized_rows, sizeof(struct Address), new_size, conn->file);
-
-    if(rc != new_size) {
-	die("Could not write reized array to file", conn);
-    }
+    conn->db->rows=resized_rows;
+    conn->db->max_data = new_data_max; 
+    conn->db->max_rows = new_size; 
+    Database_write(conn); 
 }
 
 int main(int argc, char *argv[])
@@ -476,9 +499,9 @@ int main(int argc, char *argv[])
             break;
 	    
 	case 'r':
-	    if(argc != 4) die("Need size to resize with", NULL);
+	    if(argc != 5) die("Need number of rows and size to resize with", NULL);
 	    conn = Database_open(filename, action, 0, 0);
-	    Database_resize(conn, atoi(argv[3]));
+	    Database_resize(conn, atoi(argv[3]), atoi(argv[4]));
 	    break;
 
         default:

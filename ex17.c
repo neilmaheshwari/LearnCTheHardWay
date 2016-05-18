@@ -134,6 +134,10 @@ void Database_load(struct Connection *conn)
 	if(email_rc != conn->db->max_data) {
 	    die("Could not load email.\n", conn);
 	}
+
+	// Null terminate strings
+	conn->db->rows[i].email[conn->db->max_data - 1] = '\0';
+	conn->db->rows[i].name[conn->db->max_data - 1] = '\0';
     }
 }
 

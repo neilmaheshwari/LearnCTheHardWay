@@ -21,6 +21,7 @@ all:
 	make ex15
 	make ex16
 	make ex17
+	make ex18
 	make stack
 	find . -maxdepth 1 -not -name "*.sh" -not -name "*.c*" -not -name "*.dSYM" -name "ex*" | xargs -I file mv -f -v file bin/file
 	find . -maxdepth 1 -name "*.dSYM" | xargs -I file rm -rfv bin/file

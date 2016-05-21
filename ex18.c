@@ -27,16 +27,15 @@ void die(const char *message)
 // typedef creating a type for a function pointer
 typedef int (*compare_cb)(int a, int b);
 
-
 int *bubble_sort(int *numbers, int count, compare_cb cmp)
-{
+{    
     int temp = 0;
     int i = 0;
     int j = 0;
     int *target = malloc(count * sizeof(int));
 
     if(!target) {
-	die("Memory error.");
+ 	die("Memory error.");
     };
 
     memcpy(target, numbers, count * sizeof(int));
@@ -88,7 +87,7 @@ void test_sorting(int *numbers, int count, compare_cb cmp)
     }
     printf("\n");
 
-    free sorted);
+    free(sorted);
 }
 
 int main(int argc, char *argv[])

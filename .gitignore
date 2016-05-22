@@ -1,5 +1,7 @@
 *.dSYM
 bin/
+*.o
+ex19/ex19
 
 # Emacs
 \#*\#

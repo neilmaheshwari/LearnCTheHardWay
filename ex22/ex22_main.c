@@ -20,6 +20,20 @@ void scope_demo(int count)
     log_info("count after assign: %d", count);
 }
 
+void pass_by_value_demo(int value)
+{
+    value = value * value;
+    log_info("value in function: %d", value);    
+}
+
+void pass_by_reference_demo(int *reference)
+{
+    int temp = 0;
+    temp = *reference * *reference;
+    *reference = temp;
+    log_info("reference in function: %d", *reference);
+}
+
 int main(int argc, char *argv[])
 {
     // test out THE_AGE accessors
@@ -50,5 +64,18 @@ int main(int argc, char *argv[])
 
     log_info("count after calling scope_demo: %d", count);
 
+    int value = 3;
+    log_info("value before and after pass_by_value_demo should be the same");
+    log_info("value before calling pass_by_value_demo: %d", value);
+    pass_by_value_demo(value);
+    log_info("value after calling pass_by_value_demo: %d", value);
+
+    int temp = 3;
+    int *reference = &temp;
+
+    log_info("value before and after pass_by_reference_demo should be different");
+    log_info("value before calling pass_by_reference: %d", *reference);
+    pass_by_reference_demo(reference);
+    log_info("value after calling pass_by_reference_demo: %d", *reference);
     return 0;
 }    

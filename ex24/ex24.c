@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "dbg.h"
 
 #define MAX_DATA 100
@@ -35,8 +36,12 @@ int main(int argc, char *argv[])
     check(in != NULL, "Failed to read last name.");
 
     printf("How old are you? ");
-    int rc = fscanf(stdin, "%d", &you.age);
-    check(rc > 0, "You have to enter a number.");
+    char age_buffer [MAX_DATA -1];
+    in = fgets(age_buffer, MAX_DATA-1, stdin);
+    check(in != NULL, "Failed to read age.");
+
+    // TODO: How does atoi handle invalid input?
+    you.age = atoi(age_buffer);
 
     printf("What color are your eyes:\n");
     for(i = 0; i <= OTHER_EYES; i++) {
@@ -44,16 +49,19 @@ int main(int argc, char *argv[])
     }
     printf("> ");
 
-    int eyes = -1;
-    rc = fscanf(stdin, "%d", &eyes);
-    check(rc > 0, "You have to enter a number.");
+    char eyes_buffer [MAX_DATA-1];
+    in = fgets(eyes_buffer, MAX_DATA-1, stdin);
+    check(in != NULL, "Failed to read eyes");
 
-    you.eyes = eyes - 1;
+    you.eyes = atoi(eyes_buffer) - 1;
+
     check(you.eyes <= OTHER_EYES && you.eyes >= 0, "Do it right, that's not an option.");
 
     printf("How much do you make an hour? ");
-    rc = fscanf(stdin, "%f", &you.income);
-    check(rc > 0, "Enter a floating point number.");
+    char income_buffer [MAX_DATA-1];
+    in = fgets(income_buffer, MAX_DATA-1, stdin);
+    check(in != NULL, "Failed to read income");
+    you.income = atof(income_buffer);
 
     printf("----- RESULTS -----\n");
 
